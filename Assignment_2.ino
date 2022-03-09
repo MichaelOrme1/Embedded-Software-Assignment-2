@@ -1,17 +1,18 @@
 #include "Ticker.h"
-//int b = 900;
-//int c = 17;
-//int d = 2500;
-//int delay = 2500
+
 int increment_tick();
 int tick = 0;
+int average_analogue = 0;
+int BUTTONstate = 0;
+int Frequency = 0;
 Ticker timer(increment_tick, 1000);
 
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);//Used to show what the program is doing
+  Serial.begin(115200);
   pinMode(13, OUTPUT);
+  pinMode(14, OUTPUT);
   pinMode(3,INPUT);
   pinMode(A0,INPUT);
 }
@@ -30,8 +31,8 @@ void loop() {
  }
 
  if ((tick/2) %3 == 0){
-    Task7();//3
-    Task8();//3
+    Task7and8();//3
+   
  }
 
   if ((tick/2) %10 == 0){
@@ -46,26 +47,29 @@ void loop() {
 
 
 void Task1(){
-   digitalWrite(13,HIGH);//Send HIGH signal, turn LED on
+   digitalWrite(14,HIGH);//Send HIGH signal, turn LED on
    delayMicroseconds(50);
-   digitalWrite(13,LOW);//Send LOW signal, turn LED off
+   digitalWrite(14,LOW);//Send LOW signal, turn LED off
 }
 
 void Task2(){
-  int BUTTON1state = digitalRead(3);
+  BUTTONstate = digitalRead(3);
 }
 
 void Task3(){
   
 }
 
-void Task4(){
-  
+void Task4and5(){
+  int analogue1 = analogRead(A0);
+  int analogue2 = analogRead(A0);
+  int analogue3 = analogRead(A0);
+  int analogue4 = analogRead(A0);
+
+  average_analogue = (analogue1+analogue2+analogue3+analogue4)/4;
 }
 
-void Task5(){
-  
-}
+
 
 
 void Task6(){
@@ -76,20 +80,30 @@ void Task6(){
   }
 }
 
-void Task7(){
+void Task7and8(){
+  int error_code;
+  if (average_analogue > 3300/2){
+    error_code = 1;
+     digitalWrite(14,HIGH);//Send HIGH signal, turn LED on
+  }
+else{
+    error_code = 0;
+    digitalWrite(14,LOW);//Send LOW signal, turn LED off
+
   
 }
-
-void Task8(){
-  
 }
 
 void Task9(){
-  
+  Serial.print(BUTTONstate);
+  Serial.print(",");
+  Serial.print(average_analogue);
+  Serial.print(",");
+  Serial.print(Frequency);
+    
 }
 
 int increment_tick(){
   tick ++;
-   Task4();//0.5
-   Task5();//0.5
+  Task4and5();
 }
