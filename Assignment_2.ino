@@ -5,7 +5,7 @@ int tick = 0;
 int average_analogue = 0;
 int BUTTONstate = 0;
 int Frequency = 0;
-Ticker timer(increment_tick, 1000);
+Ticker timer(increment_tick, 500);
 
 
 void setup() {
@@ -19,28 +19,28 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
- timer.update();
+ timer.update();//Allow timer to count
  Task1();//0.025
 
- if ((tick/2) %2 == 0){
-  Task2();//2
+ if ((tick/2) %2 == 0){//Timer every 0.5 seconds divide by 2 to get seconds
+  Task2();//2 seconds
  }
 
  if ((tick/2) %1 == 0){
-   Task6();//1
+   Task6();//1 second
  }
 
  if ((tick/2) %3 == 0){
-    Task7and8();//3
+    Task7and8();//3 seconds
    
  }
 
   if ((tick/2) %10 == 0){
-   Task3();//10
+   Task3();//10 seconds
   }
 
   if ((tick/2) %50 == 0){
-   Task9();//50
+   Task9();//50 seconds
  
   }
 }
@@ -53,7 +53,7 @@ void Task1(){
 }
 
 void Task2(){
-  BUTTONstate = digitalRead(3);
+  BUTTONstate = digitalRead(3); //Read button
 }
 
 void Task3(){
@@ -61,12 +61,13 @@ void Task3(){
 }
 
 void Task4and5(){
+  //Get analogue reading 4 times
   int analogue1 = analogRead(A0);
   int analogue2 = analogRead(A0);
   int analogue3 = analogRead(A0);
   int analogue4 = analogRead(A0);
 
-  average_analogue = (analogue1+analogue2+analogue3+analogue4)/4;
+  average_analogue = (analogue1+analogue2+analogue3+analogue4)/4;//Get average analogue
 }
 
 
@@ -74,7 +75,7 @@ void Task4and5(){
 
 void Task6(){
   int i = 0;
-  while( i >1000){
+  while( i >1000){//Do 1000 times
     __asm__ __volatile__ ("nop");
     i++;
   }
@@ -95,6 +96,7 @@ else{
 }
 
 void Task9(){
+  //CSV
   Serial.print(BUTTONstate);
   Serial.print(",");
   Serial.print(average_analogue);
@@ -104,6 +106,6 @@ void Task9(){
 }
 
 int increment_tick(){
-  tick ++;
-  Task4and5();
+  tick ++;//Increase tick every 0.5 seconds
+  Task4and5();//DO task 4 and 5 every tick
 }
