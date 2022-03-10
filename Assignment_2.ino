@@ -1,5 +1,9 @@
 #include "Ticker.h"
 
+#define Watchdog PD7
+#define LED PB5
+#define BUTTON PD3
+#define ANALOGUE A0
 int increment_tick();
 int tick = 0;
 int average_analogue = 0;
@@ -11,10 +15,10 @@ Ticker timer(increment_tick, 500);
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  pinMode(PD7, OUTPUT);
-  pinMode(PB5, OUTPUT);
-  pinMode(PD3,INPUT);
-  pinMode(A0,INPUT);
+  pinMode(Watchdog, OUTPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(BUTTON,INPUT);
+  pinMode(ANALOGUE,INPUT);
 }
 
 void loop() {
@@ -48,13 +52,13 @@ void loop() {
 
 
 void Task1(){
-   digitalWrite(PD7,HIGH);//Send HIGH signal, turn LED on
+   digitalWrite(Watchdog,HIGH);//Send HIGH signal, turn LED on
    delayMicroseconds(50);
-   digitalWrite(PD7,LOW);//Send LOW signal, turn LED off
+   digitalWrite(Watchdog,LOW);//Send LOW signal, turn LED off
 }
 
 void Task2(){
-  BUTTONstate = digitalRead(PD3); //Read button
+  BUTTONstate = digitalRead(BUTTON); //Read button
 }
 
 void Task3(){
@@ -63,10 +67,10 @@ void Task3(){
 
 void Task4and5(){
   //Get analogue reading 4 times
-  int analogue1 = analogRead(A0);
-  int analogue2 = analogRead(A0);
-  int analogue3 = analogRead(A0);
-  int analogue4 = analogRead(A0);
+  int analogue1 = analogRead(ANALOGUE);
+  int analogue2 = analogRead(ANALOGUE);
+  int analogue3 = analogRead(ANALOGUE);
+  int analogue4 = analogRead(ANALOGUE);
 
   average_analogue = (analogue1+analogue2+analogue3+analogue4)/4;//Get average analogue
 }
@@ -86,11 +90,11 @@ void Task7and8(){
   int error_code;
   if (average_analogue > 3300/2){
     error_code = 1;
-     digitalWrite(PB5,HIGH);//Send HIGH signal, turn LED on
+     digitalWrite(LED,HIGH);//Send HIGH signal, turn LED on
   }
 else{
     error_code = 0;
-    digitalWrite(PB5,LOW);//Send LOW signal, turn LED off
+    digitalWrite(LED,LOW);//Send LOW signal, turn LED off
 
   
 }
