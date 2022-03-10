@@ -10,17 +10,18 @@ Ticker timer(increment_tick, 500);
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  pinMode(13, OUTPUT);
-  pinMode(14, OUTPUT);
-  pinMode(3,INPUT);
+  Serial.begin(9600);
+  pinMode(PD7, OUTPUT);
+  pinMode(PB5, OUTPUT);
+  pinMode(PD3,INPUT);
   pinMode(A0,INPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
- timer.update();//Allow timer to count
  Task1();//0.025
+ timer.update();//Allow timer to count
+ 
 
  if ((tick/2) %2 == 0){//Timer every 0.5 seconds divide by 2 to get seconds
   Task2();//2 seconds
@@ -47,13 +48,13 @@ void loop() {
 
 
 void Task1(){
-   digitalWrite(14,HIGH);//Send HIGH signal, turn LED on
+   digitalWrite(PD7,HIGH);//Send HIGH signal, turn LED on
    delayMicroseconds(50);
-   digitalWrite(14,LOW);//Send LOW signal, turn LED off
+   digitalWrite(PD7,LOW);//Send LOW signal, turn LED off
 }
 
 void Task2(){
-  BUTTONstate = digitalRead(3); //Read button
+  BUTTONstate = digitalRead(PD3); //Read button
 }
 
 void Task3(){
@@ -85,11 +86,11 @@ void Task7and8(){
   int error_code;
   if (average_analogue > 3300/2){
     error_code = 1;
-     digitalWrite(14,HIGH);//Send HIGH signal, turn LED on
+     digitalWrite(PB5,HIGH);//Send HIGH signal, turn LED on
   }
 else{
     error_code = 0;
-    digitalWrite(14,LOW);//Send LOW signal, turn LED off
+    digitalWrite(PB5,LOW);//Send LOW signal, turn LED off
 
   
 }
@@ -107,5 +108,5 @@ void Task9(){
 
 int increment_tick(){
   tick ++;//Increase tick every 0.5 seconds
-  Task4and5();//DO task 4 and 5 every tick
+  Task4and5();//DO every tick
 }
